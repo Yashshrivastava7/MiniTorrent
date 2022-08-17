@@ -9,9 +9,9 @@ int main(int argc,char* argv[]){
 
     int First_file,Second_file;
 
-    First_file = open("/Users/yashshrivastava/Documents/TorrentImpl/FileCopy/testfile.txt",O_RDONLY);
+    First_file = open(argv[1],O_RDONLY);
 
-    Second_file = open("/Users/yashshrivastava/Documents/TorrentImpl/FileCopy/testfile2.txt",O_WRONLY | O_CREAT,S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+    Second_file = open(argv[2],O_WRONLY | O_CREAT,S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 
     while(read(First_file,&buffer,1)){
         write(Second_file,&buffer,1);
