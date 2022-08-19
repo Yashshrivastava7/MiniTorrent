@@ -4,6 +4,8 @@
 
 using namespace std;
 
+const int BUFF_SIZE = 4096;
+
 int main(int argc,char* argv[]){
     char buffer;
 
