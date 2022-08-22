@@ -37,9 +37,18 @@ int main(int argc,char* argv[]){
     int single_chunk_writes = size_of_chunks / BUFF_SIZE;
 
     string s = argv[1];
+    int last_slash = 0;
+    for(int i=0;i<s.size();i++){
+        if(s[i]=='/'){
+            last_slash = i;
+        }
+    }
+    string processed = s.substr(0,last_slash+1);
+
+    cout << processed << endl;
     
     for(int i=0;i<number_of_chunks;i++){
-        string c = s+"image"+to_string(i)+".part";
+        string c = processed+"image"+to_string(i)+".part";
         const char* ch = c.c_str();
         int temp_file = open(ch,O_WRONLY | O_CREAT,S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
         for(i=0;i<single_chunk_writes;i++){
@@ -48,6 +57,8 @@ int main(int argc,char* argv[]){
         }
         close(temp_file);
     }
+
+    close(first_file);
 
     return 0;
 }
