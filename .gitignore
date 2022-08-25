@@ -1,1 +1,9 @@
 Temp
+*.out
+*.part
+*.txt
+*.png
+*.jpg
+*.jpeg
+*.mp4
+.*

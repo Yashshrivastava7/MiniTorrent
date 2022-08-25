@@ -38,6 +38,7 @@ int main(int argc,char* argv[]){
 
     string s = argv[1];
     int last_slash = 0;
+    //efficient approach: start from the back
     for(int i=0;i<s.size();i++){
         if(s[i]=='/'){
             last_slash = i;
@@ -47,11 +48,12 @@ int main(int argc,char* argv[]){
 
     cout << processed << endl;
     
-    for(int i=0;i<number_of_chunks;i++){
+    for(int i=0; i<number_of_chunks; i++) {
+        cerr << "I = " << i << endl;
         string c = processed+"image"+to_string(i)+".part";
         const char* ch = c.c_str();
-        int temp_file = open(ch,O_WRONLY | O_CREAT,S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
-        for(i=0;i<single_chunk_writes;i++){
+        int temp_file = open(ch, O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+        for(int j=0;j<single_chunk_writes;j++){
             read_size = read(first_file,&buff,BUFF_SIZE);
             write(temp_file,&buff,read_size);
         }

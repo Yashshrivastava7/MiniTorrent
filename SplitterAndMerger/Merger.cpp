@@ -1,16 +1,24 @@
 #include <dirent.h>
+#include<unistd.h>
+#include<fcntl.h>
+#include<sys/stat.h>
+#include <iostream>
 
-int main(){
+using namespace std;
+
+int main(int argc,char* argv[]){
+
     int file_count = 0;
     DIR * dirp;
     struct dirent * entry;
 
-    dirp = opendir("path"); /* There should be error handling after this */
+    dirp = opendir(argv[1]); 
     while ((entry = readdir(dirp)) != NULL) {
-        if (entry->d_type == DT_REG) { /* If the entry is a regular file */
+        if (entry->d_type == DT_REG) { 
             file_count++;
         }
     }
     closedir(dirp);
+    cout << file_count << endl;
     return 0;
 }
