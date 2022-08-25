@@ -2,10 +2,12 @@
 #include<unistd.h>
 #include<fcntl.h>
 #include<sys/stat.h>
+#include <utility>
 
 using namespace std;
 const int BUFF_SIZE = 4096;
 
+pair<string, string> split_path(const string& path);
 
 int main(int argc,char* argv[]){
 
@@ -37,20 +39,9 @@ int main(int argc,char* argv[]){
     int single_chunk_writes = size_of_chunks / BUFF_SIZE;
 
     string s = argv[1];
-    int last_slash = 0;
-    //efficient approach: start from the back
-    for(int i=0;i<s.size();i++){
-        if(s[i]=='/'){
-            last_slash = i;
-        }
-    }
-    string processed = s.substr(0,last_slash+1);
-
-    cout << processed << endl;
     
     for(int i=0; i<number_of_chunks; i++) {
-        cerr << "I = " << i << endl;
-        string c = processed+"image"+to_string(i)+".part";
+        string c = s+to_string(i)+".part";
         const char* ch = c.c_str();
         int temp_file = open(ch, O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
         for(int j=0;j<single_chunk_writes;j++){
