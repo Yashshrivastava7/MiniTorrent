@@ -1,13 +1,14 @@
 #include<iostream>
 #include<unistd.h>
 #include<fcntl.h>
-#include<sys/stat.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 #include <utility>
 
 using namespace std;
 const int BUFF_SIZE = 4096;
 
-pair<string, string> split_path(const string& path);
+//string split_path(string s);
 
 int main(int argc,char* argv[]){
 
@@ -39,9 +40,32 @@ int main(int argc,char* argv[]){
     int single_chunk_writes = size_of_chunks / BUFF_SIZE;
 
     string s = argv[1];
+
+    if (mkdir("SplittedFiles", 0777) == -1){
+        cerr << "Error :  " << strerror(errno) << endl;
+        return 1;
+    }
+    else{
+        cout << "Directory created" << endl;
+    }
+
+    bool slash = true;
+
+    string new_path = argv[3];
+
+    if(new_path[new_path.size()]!='/'){
+        slash = false;
+    }
+
     
     for(int i=0; i<number_of_chunks; i++) {
-        string c = s+to_string(i)+".part";
+        string c = "";
+        if(slash){
+            c = new_path+"SplittedFiles/"+to_string(i)+".part";
+        }
+        else{
+            c = new_path+"/SplittedFiles/"+to_string(i)+".part";
+        }
         const char* ch = c.c_str();
         int temp_file = open(ch, O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
         for(int j=0;j<single_chunk_writes;j++){
@@ -55,3 +79,15 @@ int main(int argc,char* argv[]){
 
     return 0;
 }
+
+// string split_path(string s){
+//     int last_slash_index = -1;
+//     int n = s.size();
+//     for(int i=n-1;i>=0;--i){
+//         if(s[i]=='/'){
+//             last_slash_index = i;
+//             break;
+//         }
+//     }
+//     return s.substr(0,last_slash_index);
+// }
