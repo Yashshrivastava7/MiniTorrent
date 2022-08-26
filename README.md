@@ -6,14 +6,14 @@
 * First try with a text file
 * Then try multimedia file
 * example: `./copy.out <src> <dst>`
-* example: `./copy.out /Users/yashshrivastava/Documents/abc.txt ./fuckyFolder/`
+* example: `./copy.out /Users/yashshrivastava/Documents/abc.txt ./Folder/`
 * Assume both directories exist
 
 ### Stage 2:
 #### Stage 2a:
 * Try to split a big file into small chunks of fixed size
-* Syntax: `./split.out <filepath> <fixed size in MB>`
-* Example: `./split.out image.jpg 10`
+* Syntax: `./split.out <filepath> <fixed size in MB> <current path>`
+* Example: `./split.out image.jpg 10 .`
 * Output Format: `image_1.part image_2.part .... image_N.part`
 #### Stage 2b:
 * Then try to merge the split files
