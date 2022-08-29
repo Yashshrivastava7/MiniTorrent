@@ -3,10 +3,15 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <unistd.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <fcntl.h>
 #include <iostream>
 #define PORT 8080
 
 using namespace std;
+
+const int BUFF_SIZE = 1024;
   
 int main(int argc, char const* argv[])
 {
@@ -18,9 +23,10 @@ int main(int argc, char const* argv[])
         printf("\n Socket creation error \n");
         return -1;
     }
-    string s;
-    cout << "Enter the message to send to server: ";
-    getline(cin,s);
+
+    string address = argv[1];
+
+    int first_file = open(argv[1],O_RDONLY);
   
     serv_addr.sin_family = AF_INET;
     serv_addr.sin_port = htons(PORT);
@@ -41,9 +47,11 @@ int main(int argc, char const* argv[])
         printf("\nConnection Failed \n");
         return -1;
     }
-    const char* ch = s.c_str();
-    send(sock, ch, strlen(ch), 0);
-  
+    int size;
+    while((size=read(first_file,&buffer,BUFF_SIZE))){
+        send(sock, buffer, size, 0);
+    }
+    
     // closing the connected socket
     close(client_fd);
     return 0;
