@@ -22,14 +22,12 @@ int main(int argc, char const* argv[])
     }
   
     // Forcefully attaching socket to the port 8080
-    if (setsockopt(server_fd, SOL_SOCKET,
-                   SO_REUSEADDR | SO_REUSEPORT, &opt,
-                   sizeof(opt))) {
+    if (setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR , &opt, sizeof(opt))){
         perror("setsockopt");
         exit(EXIT_FAILURE);
     }
     address.sin_family = AF_INET;
-    address.sin_addr.s_addr = INADDR_ANY;
+    address.sin_addr.s_addr = INADDR_ANY; // current IP address
     address.sin_port = htons(PORT);
   
     // Forcefully attaching socket to the port 8080
@@ -52,8 +50,6 @@ int main(int argc, char const* argv[])
     }
     valread = read(new_socket, buffer, 1024);
     printf("%s\n", buffer);
-    send(new_socket, hello, strlen(hello), 0);
-    printf("Hello message sent\n");
     
   // closing the connected socket
     close(new_socket);
