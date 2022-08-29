@@ -4,7 +4,16 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <unistd.h>
+#include <fcntl.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <iostream>
 #define PORT 8080
+
+using namespace std;
+
+const int BUFF_SIZE = 1024;
+
 int main(int argc, char const* argv[])
 {
     int server_fd, new_socket, valread;
@@ -13,6 +22,8 @@ int main(int argc, char const* argv[])
     int addrlen = sizeof(address);
     char buffer[1024] = { 0 };
     char* hello = "Hello from server";
+
+    int copied_file = open(argv[1],O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
   
     // Creating socket file descriptor
     if ((server_fd = socket(AF_INET, SOCK_STREAM, 0))
@@ -48,8 +59,12 @@ int main(int argc, char const* argv[])
         perror("accept");
         exit(EXIT_FAILURE);
     }
-    valread = read(new_socket, buffer, 1024);
-    printf("%s\n", buffer);
+    int size;
+    while((size=read(new_socket,buffer,BUFF_SIZE))){
+        write(copied_file,&buffer,size);
+    }
+    // valread = read(new_socket, buffer, 1024);
+    // printf("%s\n", buffer);
     
   // closing the connected socket
     close(new_socket);
