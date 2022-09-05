@@ -7,7 +7,7 @@ using namespace std;
 const int BUFF_SIZE = 4096;
 
 int main(int argc,char* argv[]){
-    char buffer;
+    char buffer[BUFF_SIZE];
 
     int First_file,Second_file;
 
@@ -15,8 +15,10 @@ int main(int argc,char* argv[]){
 
     Second_file = open(argv[2],O_WRONLY | O_CREAT,S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 
-    while(read(First_file,&buffer,1)){
-        write(Second_file,&buffer,1);
+    int size;
+
+    while((size=read(First_file,&buffer,BUFF_SIZE))){
+        write(Second_file,&buffer,size);
     }
 
     cout << "Copy Successful" << endl;
